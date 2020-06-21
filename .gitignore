@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+instance/
+*.sqlite
+
+# IDE
+.idea/
+.vscode/
+
+# 개인 설정 (서버 주소, 비밀번호 등)
+secrets.h
+config.py
