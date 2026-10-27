@@ -36,9 +36,11 @@ ESP32로 만든 **3구 스마트 전등 스위치**와 기기 등록을 받는 *
 
 ## 시연 영상
 
-[![HomeNet IoT Switch 시연 영상](https://img.youtube.com/vi/p2JOymDVLDY/hqdefault.jpg)](https://youtu.be/p2JOymDVLDY)
+| 제작 과정 (3D 모델링 → 출력 → 부품 배치·납땜) | 기기 등록 → 스마트폰으로 전등 제어 |
+|:---:|:---:|
+| <img src="docs/demo/build.gif" width="420"> | <img src="docs/demo/demo.gif" width="420"> |
 
-▶ 이미지를 누르면 YouTube에서 재생됩니다.
+> 2020년 제작 당시 시연 영상을 5배속으로 줄인 GIF입니다.
 
 ## 화면
 
@@ -79,6 +81,7 @@ firmware/
   device_regist_btn_test/ 등록 버튼 트리거 테스트
 pc-client/              PC 제어 프로그램 (Java Swing + MQTT)
 docs/images/            README 화면 캡처, build/ 제작 과정 사진
+docs/demo/              시연 GIF
 server/
   flaskr/                Flask 앱 (auth: 회원·기기 등록 / main: 웹 제어 페이지·MQTT 발행, SQLite)
   run.bat
