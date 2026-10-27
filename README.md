@@ -34,6 +34,33 @@ ESP32로 만든 **3구 스마트 전등 스위치**와 기기 등록을 받는 *
  Flask 서버: 계정 확인 → switch 테이블에 MAC 등록 (같은 MAC이면 갱신)
 ```
 
+## 화면
+
+### 1. 스위치 기기 등록 (ESP32 AP 웹페이지)
+스위치의 등록 버튼을 누르면 ESP32가 `switchAP` Wi-Fi를 엽니다. 스마트폰으로 접속하면 주변 공유기 목록이 담긴 등록 페이지가 뜨고, 완료하면 스위치가 공유기에 붙어 서버에 자신을 등록합니다.
+
+| 등록 페이지 | 제출 후 안내 |
+|:---:|:---:|
+| <img src="docs/images/ap_register.png" width="300"> | <img src="docs/images/ap_saved.png" width="300"> |
+
+### 2. 웹 (Flask)
+
+| 로그인 | 회원가입 |
+|:---:|:---:|
+| <img src="docs/images/web_login.png" width="420"> | <img src="docs/images/web_register.png" width="420"> |
+
+**IOT 제어 페이지**: 내 계정에 등록된 스위치가 MAC 주소별로 표시되고, 버튼을 누르면 MQTT로 해당 채널 제어 메시지가 발행됩니다.
+
+<img src="docs/images/web_control.png" width="860">
+
+### 3. PC 클라이언트 (Java Swing)
+
+| 로그인 | 스위치 제어 |
+|:---:|:---:|
+| <img src="docs/images/pc_login.png" width="420"> | <img src="docs/images/pc_main.png" width="420"> |
+
+> 화면은 저장소의 코드를 그대로 실행해 캡처했습니다. 공유기 목록과 MAC 주소는 예시 값입니다.
+
 ## 폴더 구조
 
 ```
@@ -45,6 +72,7 @@ firmware/
   device_regist_test/    AP 프로비저닝 → 등록까지 통합 테스트
   device_regist_btn_test/ 등록 버튼 트리거 테스트
 pc-client/              PC 제어 프로그램 (Java Swing + MQTT)
+docs/images/            README 화면 캡처
 server/
   flaskr/                Flask 앱 (auth: 회원·기기 등록 / main: 웹 제어 페이지·MQTT 발행, SQLite)
   run.bat
