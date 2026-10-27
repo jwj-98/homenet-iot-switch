@@ -149,7 +149,7 @@ def login():
         if error is None:
             session.clear()
             session['username'] = user['username']
-            return 'ok', redirect(url_for('board.lists'))
+            return redirect(url_for('main.control'))
 
         flash(error)
 
@@ -160,3 +160,28 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+
+# PC 클라이언트(Java Swing)용 로그인: 성공 시 'ok' 문자열을 돌려줍니다.
+@bp.route('/loginJava', methods=('GET', 'POST'))
+def loginJava():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        user = db.execute(
+            'SELECT * FROM user WHERE username = ?', (username,)
+        ).fetchone()
+
+        if user is None:
+            error = '아이디를 확인해주세요.'
+        elif not check_password_hash(user['password'], password):
+            error = '비밀번호를 확인해주세요.'
+
+        if error is None:
+            session.clear()
+            session['username'] = user['username']
+            return 'ok'
+
+    return error

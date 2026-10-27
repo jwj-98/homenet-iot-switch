@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div >
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>기기 목록</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+{% for device in devices %}
+<h5>&nbsp;&nbsp;{{ device['mac'] }}</h5>
+<div id="content" style="background-image:url('../static/images/switch_frame.png'); background-repeat:no-repeat; width: 268px; height: 445px; padding-top: 122.5px; ">
+    <center>
+    <button type="button"  onclick="location.href='../control?mac={{ device['mac'] }}&btnNum=1'"><img src="../static/images/switch_off.png"></button><br>
+    <button type="button"  onclick="location.href='../control?mac={{ device['mac'] }}&btnNum=2'"><img src="../static/images/switch_off.png"></button><br>
+    <button type="button"  onclick="location.href='../control?mac={{ device['mac'] }}&btnNum=3'"><img src="../static/images/switch_off.png"></button><br>
+    </center>
+</div>
+{% endfor %}
+{% endblock %}

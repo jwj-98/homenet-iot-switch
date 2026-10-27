@@ -45,7 +45,7 @@ firmware/
   device_regist_test/    AP 프로비저닝 → 등록까지 통합 테스트
   device_regist_btn_test/ 등록 버튼 트리거 테스트
 server/
-  flaskr/                Flask 앱 (auth 블루프린트, SQLite)
+  flaskr/                Flask 앱 (auth: 회원·기기 등록 / main: 웹 제어 페이지·MQTT 발행, SQLite)
   run.bat
 ```
 
@@ -64,6 +64,9 @@ server/
 | POST | `/auth/login` | username, password | 로그인 (세션) |
 | POST | `/auth/registerSwitch` | username, password, mac, type | 스위치 기기 등록 |
 | POST | `/auth/registerMoodLight` | username, password, mac, r1 | 무드등 기기 등록 |
+| POST | `/auth/loginJava` | username, password | PC 클라이언트용 로그인 (성공 시 `ok`) |
+| POST | `/java` | username | 사용자의 스위치 MAC 주소 반환 (PC 클라이언트용) |
+| GET | `/control` | mac, btnNum | 웹 제어 페이지. 버튼을 누르면 MQTT `topic`으로 `mac=…&btnNum=1~3` 발행 |
 
 DB는 SQLite이며 `user`, `switch`(채널별 on/off 상태 r1~r3), `moodLight` 테이블을 씁니다. (`server/flaskr/schema.sql`)
 
@@ -72,7 +75,8 @@ DB는 SQLite이며 `user`, `switch`(채널별 on/off 상태 r1~r3), `moodLight` 
 **서버**
 ```bash
 cd server
-pip install flask
+pip install flask flask-mqtt
+set MQTT_BROKER_URL=브로커 주소   # 기본값 127.0.0.1 (MQTT_BROKER_PORT, MQTT_USERNAME, MQTT_PASSWORD도 설정 가능)
 set FLASK_APP=flaskr
 flask init-db        # 최초 1회
 flask run --host=0.0.0.0
@@ -86,10 +90,12 @@ flask run --host=0.0.0.0
 
 - 학기 중 MQTT로 원격 제어까지 붙이려 했으나 완성하지 못해 `iot_switch.ino`의 MQTT 부분과 `sendRlyCon()`이 비어 있습니다. 이 부분은 이후 프로젝트 [lithophane-moodlight](https://github.com/jwj-98/lithophane-moodlight)에서 MQTT 구독으로 구현했습니다.
 - `registerMoodLight`가 `moodLight`가 아닌 `user` 테이블에 INSERT 합니다.
-- 로그인 성공 시 게시판(`board.lists`)으로 리다이렉트하는데, 게시판은 최종본에서 빠져 있습니다.
+- 웹 제어 페이지는 버튼을 누를 때마다 MQTT 메시지만 보내고, 스위치의 실제 on/off 상태(r1~r3)를 화면에 반영하지는 않습니다.
+- `main.py`가 MQTT용으로 별도 Flask 앱 객체를 만들어 씁니다. `/java`는 등록된 스위치가 없으면 오류가 납니다.
+- 공지사항·매뉴얼 페이지는 빈 템플릿이며, 매뉴얼 경로의 템플릿 이름에 공백 오타(`main/ manual.html`)가 있습니다.
 - `SECRET_KEY='dev'`는 Flask 튜토리얼 기본값입니다. 실제 배포 시에는 `instance/config.py`로 분리해야 합니다.
 - 서버와 기기 사이 통신이 HTTP 평문입니다.
 
 ## 기술 스택
 
-ESP32 (Arduino) · ESPAsyncWebServer · Python Flask · SQLite · Bootstrap
+ESP32 (Arduino) · ESPAsyncWebServer · Python Flask · Flask-MQTT · SQLite · Bootstrap
