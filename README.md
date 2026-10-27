@@ -72,7 +72,7 @@ firmware/
   device_regist_test/    AP 프로비저닝 → 등록까지 통합 테스트
   device_regist_btn_test/ 등록 버튼 트리거 테스트
 pc-client/              PC 제어 프로그램 (Java Swing + MQTT)
-docs/images/            README 화면 캡처
+docs/images/            README 화면 캡처, build/ 제작 과정 사진
 server/
   flaskr/                Flask 앱 (auth: 회원·기기 등록 / main: 웹 제어 페이지·MQTT 발행, SQLite)
   run.bat
@@ -109,6 +109,16 @@ java -cp "out;lib/*" -Dserver.url=http://서버주소:5000 -Dmqtt.broker=tcp://�
 - 릴레이 3채널 (GPIO 5, 17, 16)
 - 버튼 4개: 등록 버튼 1 + 전등 버튼 3 (GPIO 3, 23, 22, 1)
 - 상태 LED 4개 (GPIO 13, 21, 19, 18)
+
+### 제작 과정 (2020년 6월)
+
+시중 벽 스위치 프레임 안에 만능기판·ESP32·릴레이를 직접 배치하고 납땜해 3구 스위치로 만들었습니다.
+
+| | | |
+|:---:|:---:|:---:|
+| <img src="docs/images/build/01_frame.jpg" width="260"><br>스위치 프레임 분해 | <img src="docs/images/build/02_perfboard.jpg" width="200"><br>프레임에 맞춘 만능기판 | <img src="docs/images/build/03_esp32.jpg" width="200"><br>ESP32 장착 |
+| <img src="docs/images/build/04_relays.jpg" width="200"><br>릴레이 3채널 배치 | <img src="docs/images/build/05_soldering.jpg" width="260"><br>배선·납땜 | <img src="docs/images/build/06_wiring.jpg" width="200"><br>프레임 안 배선 |
+| <img src="docs/images/build/07_assembled.jpg" width="200"><br>내부 조립 | <img src="docs/images/build/08_led_test.jpg" width="260"><br>버튼 LED 점등 테스트 | <img src="docs/images/build/09_finished.jpg" width="200"><br>완성 (3구 + 상태 LED) |
 
 ## 서버 API
 
