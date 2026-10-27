@@ -44,10 +44,36 @@ firmware/
   http_post_test/        서버 POST 테스트
   device_regist_test/    AP 프로비저닝 → 등록까지 통합 테스트
   device_regist_btn_test/ 등록 버튼 트리거 테스트
+pc-client/              PC 제어 프로그램 (Java Swing + MQTT)
 server/
   flaskr/                Flask 앱 (auth: 회원·기기 등록 / main: 웹 제어 페이지·MQTT 발행, SQLite)
   run.bat
 ```
+
+## PC 클라이언트 (pc-client)
+
+Java Swing으로 만든 데스크탑 제어 프로그램입니다.
+
+1. 로그인 화면에서 아이디/비밀번호 입력 → `POST /auth/loginJava`
+2. 로그인 성공 시 `POST /java`로 내 스위치의 MAC 주소를 받아옴
+3. 제어 화면의 스위치 버튼 3개를 누르면 MQTT 브로커로 `mac=…&btnNum=1~3` 발행
+
+```
+src/
+  general/Main.java          시작점 (로그인 창)
+  control/                   서버 통신(HTTP POST), MQTT 발행, 서버 주소 설정(Config)
+  view/swing/screens/        로그인·메인(스위치 제어) 화면
+  view/swing/custom, other/  테두리 없는 창, 커스텀 버튼·입력칸 등 UI 부품
+```
+
+실행 (JDK 8 이상, [Eclipse Paho MQTT 1.2.4](https://repo1.maven.org/maven2/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.4/) jar를 `pc-client/lib`에 넣기)
+```bash
+cd pc-client
+javac -encoding UTF-8 -cp lib/* -d out $(find src -name "*.java") && cp -r src/view/images out/view/
+java -cp "out;lib/*" -Dserver.url=http://서버주소:5000 -Dmqtt.broker=tcp://브로커주소:1883 general.Main
+```
+
+> UI 부품 중 일부(`RectlookTextField`, `RectlookCheckBoxIcon`, `CustomImageIcon`, `AlterFonts`)는 공개된 Swing 템플릿을 가져와 수정해 썼습니다.
 
 ## 하드웨어
 
@@ -98,4 +124,4 @@ flask run --host=0.0.0.0
 
 ## 기술 스택
 
-ESP32 (Arduino) · ESPAsyncWebServer · Python Flask · Flask-MQTT · SQLite · Bootstrap
+ESP32 (Arduino) · ESPAsyncWebServer · Python Flask · Flask-MQTT · Java Swing · Eclipse Paho · SQLite · Bootstrap
