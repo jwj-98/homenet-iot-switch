@@ -34,6 +34,12 @@ ESP32로 만든 **3구 스마트 전등 스위치**와 기기 등록을 받는 *
  Flask 서버: 계정 확인 → switch 테이블에 MAC 등록 (같은 MAC이면 갱신)
 ```
 
+## 시연 영상
+
+[![HomeNet IoT Switch 시연 영상](https://img.youtube.com/vi/p2JOymDVLDY/hqdefault.jpg)](https://youtu.be/p2JOymDVLDY)
+
+▶ 이미지를 누르면 YouTube에서 재생됩니다.
+
 ## 화면
 
 ### 1. 스위치 기기 등록 (ESP32 AP 웹페이지)
